@@ -1,0 +1,1221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>How to Read a Restaurant Invoice — Fooda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#FAF7F2;
+  --paper-2:#F2EDE4;
+  --ink:#1A2238;
+  --ink-soft:#475069;
+  --ink-mute:#8A8FA0;
+  --rule:#E5DFD3;
+  --coral:#E8542C;
+  --coral-soft:#FCE7DD;
+  --green:#0E9F6E;
+  --shadow: 0 1px 2px rgba(26,34,56,.04), 0 4px 12px rgba(26,34,56,.06);
+  --shadow-lg: 0 10px 30px rgba(26,34,56,.12), 0 30px 60px rgba(26,34,56,.18);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Geist',ui-sans-serif,system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:'ss01','cv11';
+}
+h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif; font-weight:600; letter-spacing:-.01em; margin:0; color:var(--ink)}
+h1{font-size:clamp(2.4rem,5.2vw,4.4rem); line-height:1.02; letter-spacing:-.025em; font-weight:500; font-variation-settings:"opsz" 144,"SOFT" 30}
+h2{font-size:clamp(1.8rem,3.2vw,2.6rem); line-height:1.1; letter-spacing:-.02em; font-weight:500}
+h3{font-size:1.25rem; font-weight:600}
+p{margin:0}
+a{color:inherit}
+
+.eyebrow{
+  font-family:'Geist Mono',ui-monospace,monospace;
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--coral);
+}
+
+/* layout */
+.wrap{max-width:1160px; margin:0 auto; padding:0 28px}
+section{padding:48px 0; border-top:1px solid var(--rule)}
+section:first-of-type{border-top:none; padding-top:36px}
+
+/* compact page header — replaces the hero */
+.page-head{
+  display:grid; grid-template-columns: 1.4fr 1fr; gap:36px;
+  align-items:end;
+  margin-bottom:28px;
+  padding-bottom:22px;
+  border-bottom:1px solid var(--rule);
+}
+.page-head h1{
+  font-size:clamp(2rem, 3.6vw, 3rem);
+  line-height:1.05;
+  margin-top:10px;
+  font-weight:500;
+}
+.page-head .page-sub{
+  color:var(--ink-soft);
+  font-size:.98rem;
+  max-width:42ch;
+  justify-self:end;
+  text-align:right;
+}
+
+/* condensed reference section */
+.reference{padding-top:32px; padding-bottom:48px}
+.ref-block{margin-bottom:36px}
+.ref-block:last-child{margin-bottom:0}
+.ref-eyebrow{
+  font-family:'Geist Mono',ui-monospace,monospace;
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--rule);
+}
+
+/* basics — compact 3-column row */
+.basics-tight{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+}
+.basic-tight{
+  display:grid; grid-template-columns:32px 1fr; gap:12px;
+  align-items:start;
+  font-size:.92rem; color:var(--ink-soft); line-height:1.5;
+}
+.basic-tight strong{color:var(--ink); font-weight:600}
+.basic-tight .num{
+  display:inline-grid; place-items:center; width:30px; height:30px; border-radius:50%;
+  background:var(--coral); color:#fff; font-weight:700; font-size:.85rem;
+  font-family:'Geist',sans-serif;
+}
+
+/* math notes — tighter inline format */
+.math-notes-tight{
+  margin-top:18px;
+  display:grid; grid-template-columns:repeat(2,1fr); gap:10px 28px;
+  font-size:.9rem; color:var(--ink-soft); line-height:1.5;
+}
+.math-notes-tight strong{color:var(--ink); font-weight:600}
+
+/* glossary — already compact, but tighten further */
+.glossary.glossary-tight{margin-top:0; grid-template-columns:repeat(4,1fr)}
+.glossary.glossary-tight .gl-item{padding:14px 18px; border-bottom:1px solid var(--rule); border-right:1px solid var(--rule)}
+.glossary.glossary-tight .gl-item:nth-child(2n){border-right:1px solid var(--rule)}
+.glossary.glossary-tight .gl-item:nth-child(4n){border-right:none}
+.glossary.glossary-tight .gl-item:nth-last-child(-n+4){border-bottom:none}
+.glossary.glossary-tight .term{font-family:'Fraunces',serif; font-weight:600; font-size:.95rem; margin-bottom:3px}
+.glossary.glossary-tight .def{font-size:.82rem; line-height:1.45}
+
+/* HERO removed — using compact page-head instead */
+
+/* INVOICE TILES */
+.section-head{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:24px}
+.section-head .lead{color:var(--ink-soft); max-width:50ch; font-size:1.02rem}
+
+.tiles{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
+.tile{
+  position:relative;
+  border:1px solid var(--rule); border-radius:16px;
+  background:#fff; padding:0; cursor:pointer; text-align:left;
+  font-family:inherit; color:inherit;
+  overflow:hidden;
+  transition:transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease, border-color .2s ease;
+  display:flex; flex-direction:column;
+}
+.tile:hover{transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:#D5CCB9}
+.tile-thumb{
+  aspect-ratio: 4/4.4;
+  background:var(--paper-2);
+  border-bottom:1px solid var(--rule);
+  display:grid; place-items:center;
+  position:relative; overflow:hidden;
+  padding:18px 0;
+}
+.tile-thumb svg{width:72%; height:auto; filter:drop-shadow(0 6px 14px rgba(26,34,56,.08))}
+.tile-thumb .badge{
+  display:none; /* moved into body as eyebrow */
+}
+.tile .page-label{
+  font-family:'Geist Mono',monospace; font-size:.68rem; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--coral);
+  margin-bottom:8px; display:block;
+}
+.tile-body{padding:22px 24px 26px}
+.tile h3{margin-bottom:6px}
+.tile-body p{color:var(--ink-soft); font-size:.94rem; margin-bottom:18px}
+.tile-cta{
+  display:inline-flex; align-items:center; gap:8px;
+  font-weight:600; color:var(--coral); font-size:.92rem;
+}
+.tile-cta::after{
+  content:"→"; transition:transform .2s ease;
+}
+.tile:hover .tile-cta::after{transform:translateX(4px)}
+
+/* MATH FLOW */
+.math-flow{
+  display:grid; grid-template-columns:repeat(5,1fr); gap:12px;
+  margin-top:0;
+}
+.math-cell{
+  background:#fff; border:1px solid var(--rule); border-radius:10px;
+  padding:16px 14px; text-align:center;
+  position:relative;
+}
+.math-cell.total{background:var(--green); border-color:var(--green); color:#fff}
+.math-cell .lbl{
+  font-family:'Geist Mono',monospace; font-size:.62rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-mute); margin-bottom:10px; line-height:1.3;
+}
+.math-cell.total .lbl{color:rgba(255,255,255,.85)}
+.math-cell .amt{
+  font-family:'Fraunces',serif; font-size:1.4rem; font-weight:600;
+}
+.math-cell.minus .amt{color:var(--coral)}
+.math-cell::after{
+  content:""; position:absolute; right:-11px; top:50%; transform:translateY(-50%);
+  width:0; height:0; z-index:2;
+  border:5px solid transparent; border-left-color:var(--ink-mute);
+  opacity:.4;
+}
+.math-cell:last-child::after{display:none}
+
+.math-notes{
+  margin-top:32px; padding:28px; background:#fff;
+  border:1px solid var(--rule); border-radius:14px;
+  display:grid; grid-template-columns:1fr 1fr; gap:24px 36px;
+}
+.math-notes h4{font-family:'Geist',sans-serif; font-size:.95rem; margin:0 0 4px; color:var(--ink)}
+.math-notes p{color:var(--ink-soft); font-size:.92rem}
+
+/* GLOSSARY */
+.glossary{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:0;
+  background:#fff; border:1px solid var(--rule); border-radius:14px;
+  overflow:hidden; margin-top:32px;
+}
+.gl-item{padding:22px 26px; border-bottom:1px solid var(--rule); border-right:1px solid var(--rule)}
+.gl-item:nth-child(2n){border-right:none}
+.gl-item:nth-last-child(-n+2){border-bottom:none}
+.gl-item .term{font-family:'Fraunces',serif; font-weight:600; font-size:1.1rem; margin-bottom:4px}
+.gl-item .def{color:var(--ink-soft); font-size:.92rem}
+
+/* FOOTER */
+.foot{padding:48px 0 64px; color:var(--ink-mute); font-size:.85rem; border-top:1px solid var(--rule)}
+.foot .row{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap}
+
+/* ============ MODAL (zoomed invoice with hotspots) ============ */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(20,26,46,.78);
+  backdrop-filter:blur(8px) saturate(110%);
+  -webkit-backdrop-filter:blur(8px) saturate(110%);
+  display:none; z-index:60;
+  opacity:0; transition:opacity .22s ease;
+}
+.modal-backdrop.open{display:block; opacity:1}
+
+.modal{
+  position:fixed; inset:0; z-index:61;
+  display:none;
+  padding:30px;
+  overflow:auto;
+}
+.modal.open{display:flex; align-items:flex-start; justify-content:center}
+
+.modal-shell{
+  background:var(--paper);
+  border-radius:18px;
+  width:100%; max-width:1140px;
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+  animation:rise .3s cubic-bezier(.2,.7,.2,1);
+  display:grid; grid-template-rows:auto 1fr;
+}
+@keyframes rise {
+  from{opacity:0; transform:translateY(20px) scale(.985)}
+  to{opacity:1; transform:translateY(0) scale(1)}
+}
+
+.modal-head{
+  padding:18px 26px;
+  border-bottom:1px solid var(--rule);
+  display:flex; align-items:center; gap:18px; justify-content:space-between;
+  background:#fff;
+}
+.modal-head .left{display:flex; align-items:center; gap:14px; min-width:0}
+.modal-head .pill{
+  background:var(--coral); color:#fff; font-family:'Geist Mono',monospace;
+  font-size:.7rem; letter-spacing:.16em; text-transform:uppercase;
+  padding:6px 12px; border-radius:999px; flex-shrink:0;
+}
+.modal-head h2{font-size:1.4rem; font-weight:600; line-height:1.2; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.modal-head .sub{color:var(--ink-soft); font-size:.9rem}
+.icon-btn{
+  background:transparent; border:1px solid var(--rule); color:var(--ink);
+  width:38px; height:38px; border-radius:50%; cursor:pointer;
+  display:grid; place-items:center; font-size:1.1rem;
+  transition:background .15s ease, border-color .15s ease;
+}
+.icon-btn:hover{background:var(--paper); border-color:var(--ink-mute)}
+
+.modal-body{
+  display:grid; grid-template-columns: 1fr 360px; gap:0;
+  min-height:600px;
+}
+
+/* invoice canvas (left pane) */
+.invoice-stage{
+  background:linear-gradient(180deg, var(--paper-2), var(--paper));
+  padding:36px;
+  display:grid; place-items:start center;
+  position:relative;
+  overflow:auto;
+  min-height:600px;
+}
+.invoice{
+  position:relative;
+  background:#fff;
+  width:100%; max-width:600px;
+  padding:38px 38px 44px;
+  border-radius:6px;
+  box-shadow:0 1px 0 rgba(0,0,0,.04), 0 18px 40px rgba(26,34,56,.18);
+  font-size:11px;
+  color:#0e1424;
+  line-height:1.45;
+  font-family:'Geist',sans-serif;
+}
+/* invoice header */
+.inv-head{display:flex; justify-content:space-between; align-items:flex-start; gap:20px}
+.inv-title{font-size:14px; font-weight:500; color:#0e1424; margin-bottom:14px; letter-spacing:-.01em}
+.inv-restaurant{font-size:13px; font-weight:600; margin-bottom:10px}
+.inv-meta-row{display:grid; grid-template-columns:90px 1fr; column-gap:8px; row-gap:2px; font-size:10.5px}
+.inv-meta-row .k{color:#5a6280}
+.inv-meta-row .v{color:#0e1424; font-weight:500}
+.inv-logo{
+  background:var(--coral); color:#fff;
+  font-family:'Fraunces',serif; font-weight:700;
+  padding:5px 10px 6px; border-radius:3px; font-size:13px; letter-spacing:.06em;
+}
+.inv-addr{text-align:right; font-size:10px; color:#5a6280; line-height:1.5}
+.inv-addr strong{display:block; color:#0e1424; margin-top:6px}
+
+/* page 1 — top-line table */
+.toplines{
+  margin-top:28px; background:#F1EEE6; border-radius:2px;
+  display:grid; grid-template-columns:repeat(5,1fr);
+  padding:14px 16px;
+  gap:8px;
+}
+.toplines .cell .lbl{font-size:9px; color:#5a6280; line-height:1.25; min-height:24px}
+.toplines .cell .lbl em{font-style:italic; color:#9098b1}
+.toplines .cell .val{font-size:13px; font-weight:600; margin-top:6px}
+.toplines .cell .val.muted{color:#9098b1; font-weight:400; font-style:italic}
+.toplines .cell .sub{font-size:8.5px; color:#9098b1; margin-top:2px}
+
+/* page 1 — events table */
+.events{margin-top:22px; font-size:10.5px}
+.events .row{
+  display:grid;
+  grid-template-columns:64px 90px 1.7fr 1fr 70px;
+  padding:6px 0; gap:8px;
+}
+.events .head{
+  font-size:8.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:#5a6280; border-bottom:1px solid #DAD3C2; padding-bottom:6px; font-weight:500;
+}
+.events .data{border-bottom:1px solid #F1EEE6}
+.events .due{
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:8px; font-weight:600;
+}
+.events .due .total{font-size:12px}
+.events .right{text-align:right}
+
+/* page 1 — deposit confirmation */
+.deposit{
+  margin-top:22px; padding:12px 14px;
+  border:1.5px solid var(--coral);
+  border-radius:3px; background:#fff;
+  position:relative;
+}
+.deposit .lbl{
+  font-size:8.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--coral); font-weight:600; margin-bottom:6px;
+}
+.deposit .text{font-size:11px; color:#0e1424}
+.deposit .text strong{font-weight:600}
+.deposit .text .sub{display:block; color:#5a6280; font-size:10px; margin-top:2px}
+
+/* page 2 — payments / fees */
+.pay-table{margin-top:24px; font-size:10.5px}
+.pay-table .row{
+  display:grid; grid-template-columns: 1fr 90px;
+  padding:7px 0; gap:8px; border-bottom:1px solid #F1EEE6;
+}
+.pay-table .row.head{font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; color:#5a6280; border-bottom:1px solid #DAD3C2; padding-bottom:6px}
+.pay-table .row .v{text-align:right; font-variant-numeric:tabular-nums}
+.pay-table .row.due{
+  font-weight:600; border-bottom:none; margin-top:6px; padding-top:10px; border-top:1.5px solid #0e1424;
+}
+.pay-table .row.due .v{font-size:13px}
+
+/* page 3 — invoice history + reconciliation */
+.inv-history{
+  margin-top:26px; font-size:10.5px;
+}
+.inv-history .head, .inv-history .data, .inv-history .total-row{
+  display:grid; grid-template-columns:90px 130px 1fr 80px; padding:7px 0; gap:8px;
+}
+.inv-history .head{
+  font-size:8.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:#5a6280; border-bottom:1px solid #DAD3C2; padding-bottom:6px;
+}
+.inv-history .data{border-bottom:1px solid #F1EEE6}
+.inv-history .total-row{font-weight:600; padding-top:10px}
+.inv-history .right{text-align:right}
+
+.recon{
+  margin-top:24px; padding:18px; background:#F1EEE6; border-radius:3px;
+}
+.recon .name{font-size:12px; font-weight:600; margin-bottom:4px}
+.recon .desc{font-size:9.5px; color:#7a8099; font-style:italic; margin-bottom:14px}
+.recon .cols{display:grid; grid-template-columns:1fr 1fr; gap:24px}
+.recon h5{margin:0 0 8px; font-size:11px; font-weight:600; color:#0e1424; font-family:'Geist',sans-serif}
+.recon .li{
+  display:grid; grid-template-columns:18px 1fr 70px; align-items:baseline;
+  padding:5px 0; font-size:10.5px;
+}
+.recon .li .qty{color:#0e1424; font-weight:500}
+.recon .li .val{text-align:right; font-variant-numeric:tabular-nums}
+.recon .total{
+  display:grid; grid-template-columns:1fr 70px;
+  padding-top:9px; margin-top:6px; border-top:1px solid #DAD3C2;
+  font-weight:600;
+}
+.recon .total .val{text-align:right}
+.recon .total .lbl{font-size:9.5px; letter-spacing:.1em; text-transform:uppercase}
+
+/* HOTSPOTS — overlay markers */
+.hotspot{
+  position:absolute;
+  width:32px; height:32px; border-radius:50%;
+  background:var(--coral); color:#fff;
+  font-family:'Geist',sans-serif; font-weight:700; font-size:.92rem;
+  display:grid; place-items:center;
+  cursor:pointer;
+  border:none;
+  z-index:5;
+  box-shadow:0 0 0 4px #fff, 0 6px 14px rgba(232,84,44,.45);
+  transition:transform .2s ease;
+  animation:pulse 2.4s ease-out infinite;
+}
+.hotspot:hover{transform:scale(1.12)}
+.hotspot.active{
+  background:var(--ink); color:#fff;
+  box-shadow:0 0 0 4px #fff, 0 0 0 8px var(--coral), 0 6px 14px rgba(26,34,56,.4);
+  animation:none;
+  transform:scale(1.08);
+}
+.hotspot.dim{opacity:.45}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 4px #fff, 0 0 0 0 rgba(232,84,44,.5), 0 6px 14px rgba(232,84,44,.45)}
+  70%{box-shadow:0 0 0 4px #fff, 0 0 0 14px rgba(232,84,44,0), 0 6px 14px rgba(232,84,44,.45)}
+  100%{box-shadow:0 0 0 4px #fff, 0 0 0 0 rgba(232,84,44,0), 0 6px 14px rgba(232,84,44,.45)}
+}
+
+/* highlight zones on the invoice — in-place, no layout shift */
+.zone{
+  outline:2px solid transparent;
+  outline-offset:4px;
+  border-radius:4px;
+  transition:outline-color .25s ease, background-color .25s ease, box-shadow .25s ease;
+  position:relative;
+}
+.zone.active{
+  outline-color:var(--coral);
+  background-color:rgba(232,84,44,.06);
+  box-shadow:0 0 0 12px rgba(232,84,44,.05);
+}
+
+/* RIGHT PANEL — annotation reader */
+.reader{
+  background:#fff;
+  border-left:1px solid var(--rule);
+  display:flex; flex-direction:column;
+  min-height:600px;
+}
+.reader-progress{
+  padding:18px 24px 14px;
+  border-bottom:1px solid var(--rule);
+  display:flex; align-items:center; gap:10px;
+}
+.dots{display:flex; gap:6px}
+.dot{
+  width:8px; height:8px; border-radius:50%;
+  background:var(--paper-2); border:1px solid var(--rule);
+  transition:background .2s ease, transform .2s ease;
+}
+.dot.active{background:var(--coral); border-color:var(--coral); transform:scale(1.3)}
+.dot.done{background:var(--coral); border-color:var(--coral); opacity:.5}
+.progress-text{font-family:'Geist Mono',monospace; font-size:.7rem; letter-spacing:.12em; color:var(--ink-mute); text-transform:uppercase; margin-left:auto}
+
+.reader-content{padding:28px 26px; flex:1; display:flex; flex-direction:column}
+.reader-empty{
+  flex:1; display:flex; flex-direction:column; align-items:flex-start; gap:14px;
+  color:var(--ink-soft);
+}
+.reader-empty .arrow{font-size:1.6rem; color:var(--coral)}
+.reader-empty h3{font-family:'Fraunces',serif; font-weight:600; font-size:1.4rem; color:var(--ink); line-height:1.15}
+.reader-empty p{font-size:.95rem}
+
+.reader-step{display:none; flex-direction:column; gap:14px; flex:1}
+.reader-step.show{display:flex}
+.reader-step .num-pill{
+  align-self:flex-start;
+  background:var(--coral-soft); color:var(--coral);
+  font-family:'Geist Mono',monospace; font-size:.7rem; letter-spacing:.14em;
+  text-transform:uppercase; font-weight:600;
+  padding:6px 11px; border-radius:999px;
+}
+.reader-step h3{font-family:'Fraunces',serif; font-weight:600; font-size:1.4rem; line-height:1.18; color:var(--ink)}
+.reader-step p{color:var(--ink-soft); font-size:.97rem; line-height:1.6}
+.reader-step p strong{color:var(--ink); font-weight:600}
+.reader-step .tip{
+  margin-top:auto;
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-left:3px solid var(--coral);
+  padding:14px 16px; border-radius:6px;
+  font-size:.88rem; color:var(--ink-soft);
+}
+.reader-step .tip strong{color:var(--ink); font-family:'Geist Mono',monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; display:block; margin-bottom:4px; color:var(--coral)}
+
+.reader-nav{
+  border-top:1px solid var(--rule);
+  padding:16px 24px;
+  display:flex; gap:10px; justify-content:space-between; align-items:center;
+}
+.reader-nav button{
+  font-family:'Geist',sans-serif; font-weight:500; font-size:.9rem;
+  background:transparent; border:1px solid var(--rule);
+  padding:9px 16px; border-radius:999px; cursor:pointer; color:var(--ink);
+  display:inline-flex; align-items:center; gap:6px;
+  transition:background .15s ease, border-color .15s ease, opacity .15s ease;
+}
+.reader-nav button:hover:not(:disabled){background:var(--paper); border-color:var(--ink-mute)}
+.reader-nav button:disabled{opacity:.4; cursor:not-allowed}
+.reader-nav .next{background:var(--ink); color:#fff; border-color:var(--ink)}
+.reader-nav .next:hover:not(:disabled){background:#2A3354}
+
+/* responsive */
+@media (max-width: 960px){
+  section{padding:36px 0}
+  .page-head{grid-template-columns:1fr; gap:18px; align-items:start}
+  .page-head .page-sub{justify-self:start; text-align:left}
+  .tiles{grid-template-columns:1fr}
+  .basics-tight{grid-template-columns:1fr}
+  .math-flow{grid-template-columns:1fr 1fr; gap:10px}
+  .math-cell::after{display:none}
+  .math-notes-tight{grid-template-columns:1fr}
+  .glossary{grid-template-columns:1fr}
+  .glossary-tight{grid-template-columns:1fr}
+  .glossary-tight .gl-item{border-right:none !important; border-bottom:1px solid var(--rule) !important}
+  .glossary-tight .gl-item:last-child{border-bottom:none !important}
+  .gl-item{border-right:none}
+  .gl-item:nth-last-child(2){border-bottom:1px solid var(--rule)}
+  .modal{padding:0}
+  .modal-shell{border-radius:0; min-height:100vh}
+  .modal-body{grid-template-columns:1fr}
+  .reader{border-left:none; border-top:1px solid var(--rule); min-height:auto}
+  .invoice-stage{padding:20px; min-height:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- COMPACT HEADER + TILES (no separate hero) -->
+<section id="walkthrough" class="lead-section">
+  <div class="wrap">
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Fooda · New Employee Training</div>
+        <h1>How to read a restaurant invoice.</h1>
+      </div>
+      <p class="page-sub">Click any page below — the invoice itself will tell you what to look at, where, and why. Numbered markers highlight the area; the explanation appears beside it.</p>
+    </div>
+
+    <div class="tiles">
+
+      <!-- Tile 1 -->
+      <button class="tile" data-page="1" type="button">
+        <div class="tile-thumb">
+          <span class="badge">Page 1 · Summary</span>
+          <!-- Mini preview SVG -->
+          <svg viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="240" height="300" rx="6" fill="#fff" stroke="#E5DFD3"/>
+            <text x="20" y="34" font-family="Fraunces, serif" font-size="11" fill="#0e1424">Consolidated Invoice</text>
+            <rect x="195" y="22" width="28" height="14" rx="2" fill="#E8542C"/>
+            <text x="20" y="56" font-family="Geist, sans-serif" font-size="9" font-weight="600" fill="#0e1424">Sample Restaurant</text>
+            <rect x="20" y="78" width="200" height="40" fill="#F1EEE6"/>
+            <text x="28" y="94" font-family="Geist, sans-serif" font-size="6" fill="#5a6280">Meals · Food Sales · Tax · Gross</text>
+            <text x="28" y="110" font-family="Geist, sans-serif" font-size="9" font-weight="600" fill="#0e1424">44   $566.00   $0.00   $604.14</text>
+            <line x1="20" y1="140" x2="220" y2="140" stroke="#DAD3C2"/>
+            <text x="20" y="156" font-family="Geist, sans-serif" font-size="7" fill="#5a6280">3/3/26  Sample Location  $341.47</text>
+            <line x1="20" y1="168" x2="220" y2="168" stroke="#F1EEE6"/>
+            <rect x="20" y="200" width="200" height="42" rx="2" fill="none" stroke="#E8542C" stroke-width="1.4"/>
+            <text x="28" y="216" font-family="Geist, sans-serif" font-size="6" fill="#E8542C" font-weight="600">DEPOSIT CONFIRMATION</text>
+            <text x="28" y="230" font-family="Geist, sans-serif" font-size="8" font-weight="600" fill="#0e1424">$341.47 deposited 3/18/2026</text>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <span class="page-label">Page 1 · Summary</span>
+          <h3>The summary page</h3>
+          <p>Top-line numbers, the events table, and the deposit confirmation — in that order.</p>
+          <span class="tile-cta">Walk through page 1</span>
+        </div>
+      </button>
+
+      <!-- Tile 2 -->
+      <button class="tile" data-page="2" type="button">
+        <div class="tile-thumb">
+          <span class="badge">Page 2 · Event invoice</span>
+          <svg viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="240" height="300" rx="6" fill="#fff" stroke="#E5DFD3"/>
+            <text x="20" y="34" font-family="Fraunces, serif" font-size="11" fill="#0e1424">Event Invoice</text>
+            <rect x="195" y="22" width="28" height="14" rx="2" fill="#E8542C"/>
+            <text x="20" y="56" font-family="Geist, sans-serif" font-size="9" font-weight="600" fill="#0e1424">Sample Restaurant</text>
+            <rect x="20" y="68" width="100" height="48" fill="none"/>
+            <text x="20" y="80" font-family="Geist, sans-serif" font-size="6" fill="#5a6280">Invoice · Section · Date</text>
+            <text x="20" y="92" font-family="Geist, sans-serif" font-size="6" fill="#0e1424">CV0000000 / NV0000000</text>
+            <line x1="20" y1="140" x2="220" y2="140" stroke="#DAD3C2"/>
+            <text x="20" y="156" font-family="Geist, sans-serif" font-size="7" fill="#0e1424">Payments — Card</text>
+            <text x="190" y="156" font-family="Geist, sans-serif" font-size="7" fill="#0e1424" text-anchor="end">$525.16</text>
+            <text x="20" y="174" font-family="Geist, sans-serif" font-size="6" fill="#5a6280">Processing fees in-person</text>
+            <text x="190" y="174" font-family="Geist, sans-serif" font-size="6" fill="#0e1424" text-anchor="end">($17.70)</text>
+            <text x="20" y="188" font-family="Geist, sans-serif" font-size="6" fill="#5a6280">Processing fees online</text>
+            <text x="190" y="188" font-family="Geist, sans-serif" font-size="6" fill="#0e1424" text-anchor="end">($0.64)</text>
+            <text x="20" y="202" font-family="Geist, sans-serif" font-size="6" fill="#5a6280">Commission + event fee</text>
+            <text x="190" y="202" font-family="Geist, sans-serif" font-size="6" fill="#0e1424" text-anchor="end">($118.20)</text>
+            <text x="20" y="216" font-family="Geist, sans-serif" font-size="6" fill="#5a6280">Sales tax to remit</text>
+            <text x="190" y="216" font-family="Geist, sans-serif" font-size="6" fill="#0e1424" text-anchor="end">($38.14)</text>
+            <line x1="20" y1="234" x2="220" y2="234" stroke="#0e1424" stroke-width="1.2"/>
+            <text x="20" y="250" font-family="Geist, sans-serif" font-size="8" font-weight="600" fill="#0e1424">DUE TO RESTAURANT</text>
+            <text x="190" y="250" font-family="Geist, sans-serif" font-size="9" font-weight="600" fill="#0e1424" text-anchor="end">$341.47</text>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <span class="page-label">Page 2 · Event Invoice</span>
+          <h3>The event invoice</h3>
+          <p>Card payments minus four fee lines equals the event payout. This is where the math lives.</p>
+          <span class="tile-cta">Walk through page 2</span>
+        </div>
+      </button>
+
+      <!-- Tile 3 -->
+      <button class="tile" data-page="3" type="button">
+        <div class="tile-thumb">
+          <span class="badge">Page 3 · Event summary</span>
+          <svg viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="240" height="300" rx="6" fill="#fff" stroke="#E5DFD3"/>
+            <text x="20" y="34" font-family="Fraunces, serif" font-size="11" fill="#0e1424">Event Summary</text>
+            <rect x="195" y="22" width="28" height="14" rx="2" fill="#E8542C"/>
+            <text x="20" y="56" font-family="Geist, sans-serif" font-size="9" font-weight="600" fill="#0e1424">Sample Restaurant</text>
+            <text x="20" y="100" font-family="Geist, sans-serif" font-size="7" fill="#5a6280">Invoice History</text>
+            <line x1="20" y1="108" x2="220" y2="108" stroke="#DAD3C2"/>
+            <text x="20" y="120" font-family="Geist, sans-serif" font-size="7" fill="#0e1424">3/11/26  CV0000000  $341.47</text>
+            <rect x="20" y="146" width="200" height="120" fill="#F1EEE6" rx="2"/>
+            <text x="32" y="166" font-family="Geist, sans-serif" font-size="8" font-weight="600" fill="#0e1424">Sample Restaurant</text>
+            <text x="32" y="186" font-family="Geist, sans-serif" font-size="8" font-weight="600" fill="#0e1424">Sales</text>
+            <text x="120" y="186" font-family="Geist, sans-serif" font-size="8" font-weight="600" fill="#0e1424">Payments</text>
+            <text x="32" y="202" font-family="Geist, sans-serif" font-size="6" fill="#0e1424">Food sales</text>
+            <text x="105" y="202" font-family="Geist, sans-serif" font-size="6" fill="#0e1424" text-anchor="end">$566.00</text>
+            <text x="120" y="202" font-family="Geist, sans-serif" font-size="6" fill="#0e1424">Cash collected</text>
+            <text x="208" y="202" font-family="Geist, sans-serif" font-size="6" fill="#0e1424" text-anchor="end">$78.98</text>
+            <text x="32" y="214" font-family="Geist, sans-serif" font-size="6" fill="#0e1424">Tax</text>
+            <text x="105" y="214" font-family="Geist, sans-serif" font-size="6" fill="#0e1424" text-anchor="end">$38.14</text>
+            <text x="120" y="214" font-family="Geist, sans-serif" font-size="6" fill="#0e1424">Cards</text>
+            <text x="208" y="214" font-family="Geist, sans-serif" font-size="6" fill="#0e1424" text-anchor="end">$525.16</text>
+            <line x1="32" y1="226" x2="108" y2="226" stroke="#DAD3C2"/>
+            <line x1="120" y1="226" x2="208" y2="226" stroke="#DAD3C2"/>
+            <text x="32" y="240" font-family="Geist, sans-serif" font-size="6" font-weight="700" fill="#0e1424">GROSS</text>
+            <text x="105" y="240" font-family="Geist, sans-serif" font-size="7" font-weight="700" fill="#0e1424" text-anchor="end">$604.14</text>
+            <text x="120" y="240" font-family="Geist, sans-serif" font-size="6" font-weight="700" fill="#0e1424">GROSS</text>
+            <text x="208" y="240" font-family="Geist, sans-serif" font-size="7" font-weight="700" fill="#0e1424" text-anchor="end">$604.14</text>
+          </svg>
+        </div>
+        <div class="tile-body">
+          <span class="page-label">Page 3 · Event Summary</span>
+          <h3>The reconciliation</h3>
+          <p>Two columns, one number. Sales side and Payments side both have to land on the same Gross Food Sales.</p>
+          <span class="tile-cta">Walk through page 3</span>
+        </div>
+      </button>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONDENSED REFERENCE: glossary only -->
+<section class="reference">
+  <div class="wrap">
+
+    <!-- GLOSSARY — compact 4-column grid -->
+    <div class="ref-block">
+      <div class="ref-eyebrow">Glossary · The terms you'll see on every invoice</div>
+      <div class="glossary glossary-tight">
+        <div class="gl-item"><div class="term">Gross Food Sales</div><div class="def">Food sales + every tax bucket. Top-line revenue figure.</div></div>
+        <div class="gl-item"><div class="term">Food Sales</div><div class="def">Pre-tax revenue from food. Commission is calculated on this (after refunds).</div></div>
+        <div class="gl-item"><div class="term">Sales Tax — Restaurant Remit</div><div class="def">What the restaurant owes the state. If $0.00, Fooda is handling it.</div></div>
+        <div class="gl-item"><div class="term">Sales Tax — Fooda Remit</div><div class="def">Sales tax Fooda is sending to the state on the restaurant's behalf.</div></div>
+        <div class="gl-item"><div class="term">Commission + Event Fee</div><div class="def">Fooda's cut: 20–25% of food sales after refunds, plus a $5 flat event fee.</div></div>
+        <div class="gl-item"><div class="term">Processing Fees</div><div class="def">Card-network costs. In-person 1.75% + $0.25. Online/mobile 3.5% + $0.15.</div></div>
+        <div class="gl-item"><div class="term">Section Reference</div><div class="def">Internal Fooda ID for an event line (e.g., NV0000000). Look it up in Snappea.</div></div>
+        <div class="gl-item"><div class="term">Deposit / ACH Date</div><div class="def">When Fooda releases payment via ACH. Funds availability depends on the bank.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap row">
+    <div>Fooda · How to Read a Restaurant Invoice — interactive training</div>
+    <div>Click any page above to walk through it.</div>
+  </div>
+</footer>
+
+<!-- ============= MODAL ============= -->
+<div class="modal-backdrop" id="backdrop"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-shell">
+    <div class="modal-head">
+      <div class="left">
+        <span class="pill" id="modal-pill">Page 1</span>
+        <div>
+          <h2 id="modal-title">The summary page</h2>
+          <div class="sub" id="modal-sub">Click a numbered marker on the invoice</div>
+        </div>
+      </div>
+      <button class="icon-btn" id="closeBtn" aria-label="Close">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- INVOICE STAGE -->
+      <div class="invoice-stage">
+        <div class="invoice" id="invoice"><!-- injected --></div>
+      </div>
+
+      <!-- READER PANEL -->
+      <aside class="reader">
+        <div class="reader-progress">
+          <div class="dots" id="dots"></div>
+          <div class="progress-text" id="progressText">— / —</div>
+        </div>
+
+        <div class="reader-content" id="readerContent">
+          <div class="reader-empty" id="readerEmpty">
+            <div class="arrow">↘</div>
+            <h3>Click any orange marker on the invoice.</h3>
+            <p>The relevant area will highlight and the explanation will show up here. Or use the Next button below to step through them in order.</p>
+          </div>
+          <!-- step blocks injected -->
+        </div>
+
+        <div class="reader-nav">
+          <button id="prevBtn" disabled>← Prev</button>
+          <button class="next" id="nextBtn">Start →</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ====================================================================
+   Page data
+   - Each page has its own invoice HTML (recreated faithfully)
+   - And a list of hotspots: { x%, y%, zone (rectangle in %), title, body, tip }
+   ==================================================================== */
+
+const PAGES = {
+  1: {
+    pill: "Page 1",
+    title: "The summary page",
+    sub: "The roll-up: total sales, taxes, and the deposit.",
+    invoice: `
+      <div class="inv-head">
+        <div>
+          <div class="inv-title">Consolidated Invoice</div>
+          <div class="inv-restaurant">Sample Restaurant</div>
+          <div class="inv-meta-row"><div class="k">Invoice ID</div><div class="v">CV0000000</div></div>
+          <div class="inv-meta-row"><div class="k">Invoice Date</div><div class="v">3/11/2026</div></div>
+        </div>
+        <div style="text-align:right">
+          <div class="inv-logo">fooda</div>
+          <div class="inv-addr" style="margin-top:10px">
+            1 N. Dearborn St.<br/>Suite 600<br/>Chicago, IL 60602<br/>Fooda, Inc
+            <strong>Account Manager:</strong>
+            [Account Manager]<br/>[email@fooda.com]
+          </div>
+        </div>
+      </div>
+
+      <div class="toplines" id="zone-1-1">
+        <div class="cell"><div class="lbl">Meals sold</div><div class="val">44</div></div>
+        <div class="cell"><div class="lbl">Food Sales</div><div class="val">$566.00</div></div>
+        <div class="cell"><div class="lbl">Sales Tax<br/><em>(Restaurant to remit to tax authority)</em></div><div class="val">$0.00</div></div>
+        <div class="cell"><div class="lbl"><em>Sales Tax (Fooda or one of Fooda's partners to remit to tax authority)</em></div><div class="val muted">$38.14</div></div>
+        <div class="cell"><div class="lbl">Gross Food Sales</div><div class="val">$604.14</div><div class="sub">Includes Tax</div></div>
+      </div>
+
+      <div class="events" id="zone-1-2">
+        <div class="row head">
+          <div>Date</div><div>Section Reference</div><div>Location</div><div>Market</div><div class="right">Total</div>
+        </div>
+        <div class="row data">
+          <div>3/3/2026</div><div>NV0000000</div><div>Sample Location — Sample Site</div><div>Sample Market</div><div class="right">$341.47</div>
+        </div>
+        <div class="due">
+          <div>DUE TO SAMPLE RESTAURANT</div>
+          <div class="total">$341.47</div>
+        </div>
+      </div>
+
+      <div class="deposit" id="zone-1-3">
+        <div class="lbl">Deposit Confirmation</div>
+        <div class="text">
+          <strong>$341.47</strong> will be deposited by ACH on <strong>3/18/2026</strong>
+          <span class="sub">Timing of funds availability depends on the receiving bank</span>
+        </div>
+      </div>
+    `,
+    hotspots: [
+      {
+        zone: "zone-1-1", anchor: "right",
+        title: "The five top-line numbers",
+        body: "Meals sold, Food Sales, the two tax buckets, and Gross Food Sales. <strong>If \"Sales Tax (Restaurant to remit)\" is $0.00</strong>, Fooda is collecting and remitting that tax — the restaurant doesn't owe it themselves.",
+        tip: { label: "Why two tax columns?", text: "One tracks tax the restaurant has to file. The other tracks tax Fooda files for them. Only one will have a non-zero number." }
+      },
+      {
+        zone: "zone-1-2", anchor: "right",
+        title: "The events table",
+        body: "One row per event: <strong>date, section reference, location, market, and the event total</strong>. The TOTAL column is what Fooda is paying out for that event after fees.",
+        tip: { label: "Use the section reference", text: "That's the NV-number you'll plug into Snappea to find the event details." }
+      },
+      {
+        zone: "zone-1-3", anchor: "right",
+        title: "The deposit confirmation",
+        body: "The dollar amount actually hitting the restaurant's bank, with the ACH date. Please note, the ACH date is when the payment is <strong>initiated</strong>, but it doesn't typically hit until the next day (Thursday)."
+      }
+    ]
+  },
+
+  2: {
+    pill: "Page 2",
+    title: "The event invoice",
+    sub: "Where every fee gets itemized.",
+    invoice: `
+      <div class="inv-head">
+        <div>
+          <div class="inv-title">Event Invoice</div>
+          <div class="inv-restaurant">Sample Restaurant</div>
+          <div class="inv-meta-row"><div class="k">Invoice Number</div><div class="v">CV0000000</div></div>
+          <div class="inv-meta-row"><div class="k">Section Reference</div><div class="v">NV0000000</div></div>
+          <div class="inv-meta-row"><div class="k">Invoice Date</div><div class="v">3/11/2026</div></div>
+          <div class="inv-meta-row"><div class="k">Event Type</div><div class="v">Sample-000000-01</div></div>
+          <div class="inv-meta-row"><div class="k">Serving</div><div class="v">Sample Restaurant</div></div>
+          <div class="inv-meta-row"><div class="k">Meal Period</div><div class="v">Lunch</div></div>
+          <div class="inv-meta-row"><div class="k">Event Date</div><div class="v">3/3/2026</div></div>
+          <div class="inv-meta-row"><div class="k">Event Location</div><div class="v">Sample Location — Sample Site<br/>1234 Sample St<br/>Sample Food Court</div></div>
+          <div class="inv-meta-row"><div class="k">Cashier</div><div class="v">Restaurant</div></div>
+          <div class="inv-meta-row"><div class="k">Commission</div><div class="v">20%</div></div>
+          <div class="inv-meta-row"><div class="k">Partner</div><div class="v">Sample Partner</div></div>
+          <div class="inv-meta-row"><div class="k">Point of Sale</div><div class="v">Fooda POS</div></div>
+        </div>
+        <div style="text-align:right">
+          <div class="inv-logo">fooda</div>
+          <div class="inv-addr" style="margin-top:10px">
+            1 N. Dearborn St.<br/>Suite 600<br/>Chicago, IL 60602<br/>Fooda, Inc
+            <strong>Account Manager:</strong>
+            [Account Manager]<br/>[email@fooda.com]
+          </div>
+        </div>
+      </div>
+
+      <div class="pay-table">
+        <div class="row head">
+          <div>&nbsp;</div><div class="v">Total</div>
+        </div>
+        <div class="row" id="zone-2-1">
+          <div>Payments — Card</div>
+          <div class="v">$525.16</div>
+        </div>
+        <div id="zone-2-2">
+          <div class="row">
+            <div>Payment Processing Fees for in-person orders (1.75% on $511.28 of card and subsidy, misc payments and other tender methods + $0.25 on 35 orders)</div>
+            <div class="v">($17.70)</div>
+          </div>
+          <div class="row">
+            <div>Payment Processing Fees for Online Orders, Mobile Orders, Minimum Sales, and Guaranteed Sales (3.5% of card and subsidy and misc payments + $0.15 on 1 order)</div>
+            <div class="v">($0.64)</div>
+          </div>
+          <div class="row">
+            <div>Commission and Event Fees (20% commission on $566.00 food sales after refunds and rewards purchases + $5.00 event fee)</div>
+            <div class="v">($118.20)</div>
+          </div>
+          <div class="row">
+            <div>Sales tax on food sales to be remitted by Fooda or one of Fooda's partners to tax authority (sales tax on $566.00 food sales after refunds)</div>
+            <div class="v">($38.14)</div>
+          </div>
+          <div class="row">
+            <div>Tax on restaurants fees (6.6% on $17.70 payment processing swipe fee, 6.6% on $113.20 commission, 6.6% on $0.64 processing token fee, 6.6% on $5.00 event fee)</div>
+            <div class="v">($9.01)</div>
+          </div>
+        </div>
+        <div class="row due" id="zone-2-3">
+          <div>DUE TO SAMPLE RESTAURANT</div>
+          <div class="v">$341.47</div>
+        </div>
+      </div>
+    `,
+    hotspots: [
+      {
+        zone: "zone-2-1", anchor: "right",
+        title: "Start with card-side payments",
+        body: "<strong>\"Payments — Card\"</strong> is everything collected on cards. Cash collected at the event stays with the restaurant on-site, so it's not part of the deposit math.",
+        tip: { label: "Cash is invisible here", text: "If the restaurant is comparing this to their POS report, they'll be missing the cash side — that's expected." }
+      },
+      {
+        zone: "zone-2-2", anchor: "right",
+        title: "Subtract the four fee lines",
+        body: "<strong>Processing fees</strong> (in-person 1.75% + $0.25; online/mobile 3.5% + $0.15), <strong>commission and event fee</strong> (20–25% on food sales after refunds + a flat $5 event fee), and any <strong>sales tax</strong> Fooda is remitting on the restaurant's behalf.",
+        tip: { label: "Why the line items look long", text: "Each fee shows the rate and the dollar base it was calculated on. That transparency is intentional — restaurants can audit every charge." }
+      },
+      {
+        zone: "zone-2-3", anchor: "right",
+        title: "What's left is the event total",
+        body: "The bold number at the bottom (<strong>\"DUE TO [restaurant]\"</strong>) is the per-event payout. Sum all events on page 1 and you get the deposit.",
+        tip: { label: "Cross-check", text: "This number should match the TOTAL row for this event in the page 1 events table." }
+      }
+    ]
+  },
+
+  3: {
+    pill: "Page 3",
+    title: "The reconciliation",
+    sub: "The check: Sales must equal Payments.",
+    invoice: `
+      <div class="inv-head">
+        <div>
+          <div class="inv-title">Event Summary</div>
+          <div class="inv-restaurant">Sample Restaurant</div>
+          <div class="inv-meta-row"><div class="k">Invoice Number</div><div class="v">CV0000000</div></div>
+          <div class="inv-meta-row"><div class="k">Section Reference</div><div class="v">NV0000000</div></div>
+          <div class="inv-meta-row"><div class="k">Invoice Date</div><div class="v">3/11/2026</div></div>
+          <div class="inv-meta-row"><div class="k">Event Type</div><div class="v">Sample-000000-01</div></div>
+          <div class="inv-meta-row"><div class="k">Serving</div><div class="v">Sample Restaurant</div></div>
+          <div class="inv-meta-row"><div class="k">Meal Period</div><div class="v">Lunch</div></div>
+          <div class="inv-meta-row"><div class="k">Event Date</div><div class="v">3/3/2026</div></div>
+          <div class="inv-meta-row"><div class="k">Event Location</div><div class="v">Sample Location — Sample Site<br/>1234 Sample St<br/>Sample Food Court</div></div>
+          <div class="inv-meta-row"><div class="k">Cashier</div><div class="v">Restaurant</div></div>
+          <div class="inv-meta-row"><div class="k">Commission</div><div class="v">20%</div></div>
+          <div class="inv-meta-row"><div class="k">Partner</div><div class="v">Sample Partner</div></div>
+          <div class="inv-meta-row"><div class="k">Point of Sale</div><div class="v">Fooda POS</div></div>
+        </div>
+        <div style="text-align:right">
+          <div class="inv-logo">fooda</div>
+          <div class="inv-addr" style="margin-top:10px">
+            1 N. Dearborn St.<br/>Suite 600<br/>Chicago, IL 60602<br/>Fooda, Inc
+            <strong>Account Manager:</strong>
+            [Account Manager]<br/>[email@fooda.com]
+          </div>
+        </div>
+      </div>
+
+      <div class="inv-history">
+        <div style="font-size:12px; font-weight:600; margin-top:6px">Invoice History</div>
+        <div class="head">
+          <div>Invoice Date</div><div>Section Reference</div><div>Consolidated Invoice</div><div class="right">Total</div>
+        </div>
+        <div class="data">
+          <div>3/11/2026</div><div>NV0000000</div><div>CV0000000</div><div class="right">$341.47</div>
+        </div>
+        <div class="total-row">
+          <div>TOTAL</div><div></div><div></div><div class="right">$341.47</div>
+        </div>
+      </div>
+
+      <div class="recon" id="zone-3-1">
+        <div class="name">Sample Restaurant</div>
+        <div class="desc">This summary is for informational purposes only and is not a part of your invoice.</div>
+        <div class="cols">
+          <div>
+            <h5>Sales</h5>
+            <div class="li"><div class="qty">44</div><div>Food sales</div><div class="val">$566.00</div></div>
+            <div class="li"><div class="qty"></div><div>Tax</div><div class="val">$38.14</div></div>
+            <div class="total" id="zone-3-2a"><div class="lbl">Gross Food Sales</div><div class="val">$604.14</div></div>
+          </div>
+          <div>
+            <h5>Payments</h5>
+            <div class="li"><div class="qty">8</div><div>Cash collected</div><div class="val">$78.98</div></div>
+            <div class="li"><div class="qty">36</div><div>Cards collected</div><div class="val">$525.16</div></div>
+            <div class="total" id="zone-3-2b"><div class="lbl">Gross Food Sales</div><div class="val">$604.14</div></div>
+          </div>
+        </div>
+      </div>
+    `,
+    hotspots: [
+      {
+        zone: "zone-3-1", anchor: "right",
+        title: "Two columns, one number",
+        body: "The <strong>Sales side</strong> adds Food Sales + Tax = Gross Food Sales. The <strong>Payments side</strong> adds Cash + Cards = Gross Food Sales. Both must reconcile to the same total."
+      },
+      {
+        zoneMulti: ["zone-3-2a", "zone-3-2b"], primaryZone: "zone-3-2b", anchor: "right",
+        title: "The numbers must match",
+        body: "When the two Gross Food Sales totals agree, the event reconciles cleanly. When a restaurant says <strong>\"my numbers don't match,\"</strong> this is the first place to check.",
+        tip: { label: "If they don't match", text: "Pull the section reference and escalate. A mismatch is a red flag, not a rounding issue." }
+      },
+      {
+        zone: "zone-3-1", anchor: "left",
+        title: "Sales vs. Payments — what's the difference?",
+        body: "<strong>Sales</strong> reports what was sold (food + tax). <strong>Payments</strong> reports how it was paid for (cash + cards). They're <em>two views of the same money</em> — one tells you the menu side, the other tells you the till side."
+      }
+    ]
+  }
+};
+
+/* ====================================================================
+   Modal mechanics
+   ==================================================================== */
+const $ = sel => document.querySelector(sel);
+const backdrop = $("#backdrop");
+const modal = $("#modal");
+const invoiceEl = $("#invoice");
+const dotsEl = $("#dots");
+const progressTextEl = $("#progressText");
+const readerContent = $("#readerContent");
+const readerEmpty = $("#readerEmpty");
+const prevBtn = $("#prevBtn");
+const nextBtn = $("#nextBtn");
+const closeBtn = $("#closeBtn");
+const modalPill = $("#modal-pill");
+const modalTitle = $("#modal-title");
+const modalSub = $("#modal-sub");
+
+let currentPage = null;
+let currentStep = -1; // -1 means "no step yet, show empty state"
+
+function openPage(pageNum){
+  currentPage = pageNum;
+  currentStep = -1;
+  const data = PAGES[pageNum];
+
+  modalPill.textContent = data.pill;
+  modalTitle.textContent = data.title;
+  modalSub.textContent = data.sub;
+
+  // inject invoice
+  invoiceEl.innerHTML = data.invoice;
+
+  // place hotspots — positioned relative to their associated zone
+  data.hotspots.forEach((h, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'hotspot';
+    btn.textContent = (i+1);
+    btn.dataset.idx = i;
+    btn.addEventListener('click', () => goToStep(i));
+    invoiceEl.appendChild(btn);
+  });
+
+  // build steps in reader
+  readerContent.querySelectorAll('.reader-step').forEach(n => n.remove());
+  data.hotspots.forEach((h, i) => {
+    const div = document.createElement('div');
+    div.className = 'reader-step';
+    div.dataset.idx = i;
+    div.innerHTML = `
+      <span class="num-pill">Stop ${i+1} of ${data.hotspots.length}</span>
+      <h3>${h.title}</h3>
+      <p>${h.body}</p>
+      ${h.tip ? `<div class="tip"><strong>${h.tip.label}</strong>${h.tip.text}</div>` : ''}
+    `;
+    readerContent.appendChild(div);
+  });
+
+  // dots
+  dotsEl.innerHTML = '';
+  data.hotspots.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    d.dataset.idx = i;
+    d.addEventListener('click', () => goToStep(i));
+    dotsEl.appendChild(d);
+  });
+  progressTextEl.textContent = `0 / ${data.hotspots.length}`;
+
+  // reset state
+  readerEmpty.style.display = 'flex';
+  prevBtn.disabled = true;
+  nextBtn.textContent = 'Start →';
+  nextBtn.disabled = false;
+
+  // show modal
+  backdrop.classList.add('open');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // position hotspots after the modal is visible & layout has settled
+  requestAnimationFrame(() => {
+    positionHotspots();
+    // a second pass for fonts settling
+    setTimeout(positionHotspots, 80);
+  });
+}
+
+function positionHotspots(){
+  if (currentPage == null) return;
+  const data = PAGES[currentPage];
+  const ir = invoiceEl.getBoundingClientRect();
+  invoiceEl.querySelectorAll('.hotspot').forEach((btn) => {
+    const i = parseInt(btn.dataset.idx, 10);
+    const h = data.hotspots[i];
+    const targetId = h.primaryZone || h.zone || (h.zoneMulti && h.zoneMulti[0]);
+    const zoneEl = targetId ? document.getElementById(targetId) : null;
+    if (!zoneEl) return;
+    const r = zoneEl.getBoundingClientRect();
+    const top = r.top - ir.top;
+    const left = r.left - ir.left;
+    let x, y;
+    const offset = 28;
+    switch (h.anchor || 'right'){
+      case 'right':  x = left + r.width + offset;  y = top + r.height / 2; break;
+      case 'left':   x = left - offset;            y = top + r.height / 2; break;
+      case 'top':    x = left + r.width / 2;       y = top - offset;       break;
+      case 'bottom': x = left + r.width / 2;       y = top + r.height + offset; break;
+      case 'center': x = left + r.width / 2;       y = top + r.height / 2; break;
+      default:       x = left + r.width + offset;  y = top + r.height / 2;
+    }
+    btn.style.left = x + 'px';
+    btn.style.top  = y + 'px';
+    btn.style.transform = 'translate(-50%,-50%)';
+  });
+}
+
+function closeModal(){
+  backdrop.classList.remove('open');
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function goToStep(idx){
+  if (currentPage == null) return;
+  const data = PAGES[currentPage];
+  if (idx < 0 || idx >= data.hotspots.length) return;
+  currentStep = idx;
+
+  // hide empty state
+  readerEmpty.style.display = 'none';
+
+  // toggle step blocks
+  readerContent.querySelectorAll('.reader-step').forEach(n => {
+    n.classList.toggle('show', parseInt(n.dataset.idx,10) === idx);
+  });
+
+  // hotspots
+  invoiceEl.querySelectorAll('.hotspot').forEach(h => {
+    const hi = parseInt(h.dataset.idx,10);
+    h.classList.toggle('active', hi === idx);
+    h.classList.toggle('dim', hi !== idx);
+  });
+
+  // zones
+  // remove all active zones first
+  invoiceEl.querySelectorAll('.zone').forEach(z => z.classList.remove('active'));
+  // ensure each zone target has class 'zone' applied dynamically
+  const h = data.hotspots[idx];
+  const zoneIds = h.zoneMulti ? h.zoneMulti : (h.zone ? [h.zone] : []);
+  zoneIds.forEach(zid => {
+    const el = document.getElementById(zid);
+    if (el) {
+      el.classList.add('zone','active');
+    }
+  });
+
+  // dots
+  dotsEl.querySelectorAll('.dot').forEach(d => {
+    const di = parseInt(d.dataset.idx,10);
+    d.classList.toggle('active', di === idx);
+    d.classList.toggle('done', di < idx);
+  });
+  progressTextEl.textContent = `${idx+1} / ${data.hotspots.length}`;
+
+  // nav buttons
+  prevBtn.disabled = idx === 0;
+  if (idx === data.hotspots.length - 1) {
+    nextBtn.textContent = 'Done ✓';
+  } else {
+    nextBtn.textContent = 'Next →';
+  }
+  nextBtn.disabled = false;
+}
+
+/* wire up tile clicks */
+document.querySelectorAll('.tile').forEach(t => {
+  t.addEventListener('click', () => openPage(parseInt(t.dataset.page,10)));
+});
+
+closeBtn.addEventListener('click', closeModal);
+backdrop.addEventListener('click', closeModal);
+
+prevBtn.addEventListener('click', () => {
+  if (currentStep > 0) goToStep(currentStep - 1);
+});
+nextBtn.addEventListener('click', () => {
+  if (currentPage == null) return;
+  const total = PAGES[currentPage].hotspots.length;
+  if (currentStep === -1){
+    goToStep(0);
+  } else if (currentStep < total - 1){
+    goToStep(currentStep + 1);
+  } else {
+    closeModal();
+  }
+});
+
+/* keyboard */
+document.addEventListener('keydown', (e) => {
+  if (!modal.classList.contains('open')) return;
+  if (e.key === 'Escape') closeModal();
+  else if (e.key === 'ArrowRight') nextBtn.click();
+  else if (e.key === 'ArrowLeft') prevBtn.click();
+});
+
+/* reposition hotspots on resize */
+let resizeTimer;
+window.addEventListener('resize', () => {
+  if (!modal.classList.contains('open')) return;
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(positionHotspots, 60);
+});
+</script>
+</body>
+</html>

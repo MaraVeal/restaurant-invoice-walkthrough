@@ -2,7 +2,7 @@
 
 An interactive, page-by-page walkthrough of a Fooda restaurant invoice — built as a training tool for new employees.
 
-**Live site:** https://yourusername.github.io/invoice-walkthrough/  
+**Live site:** https://maraveal.github.io/restaurant-invoice-walkthrough/ 
 *(replace with your actual GitHub Pages URL once it's live)*
 
 ## What it does
